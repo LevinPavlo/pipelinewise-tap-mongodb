@@ -304,7 +304,7 @@ def main_impl():
     srv = config.get('srv') == 'true'
 
     if not srv:
-        args = utils.parse_args(REQUIRED_CONFIG_KEYS_NON_SRV)
+        args = utils.parse_args([])
         config = args.config
 
     connection_string = get_connection_string(config)
