@@ -53,6 +53,7 @@ def do_discover(client: MongoClient, config: Dict):
         config: DB config
     """
     streams = []
+    LOGGER.info("All config '%s'", config)
     LOGGER.info("Databases in config '%s'", config['database'])
     if config['database'] not in get_databases(client, config):
         raise NoReadPrivilegeException(config['user'], config['database'])
