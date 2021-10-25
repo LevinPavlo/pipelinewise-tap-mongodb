@@ -2,22 +2,28 @@
 import copy
 import json
 import sys
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 from urllib import parse
 
 import singer
 from pymongo import MongoClient
 from singer import metadata, metrics, utils
 
-from tap_mongodb.sync_strategies import change_streams
-from tap_mongodb.sync_strategies import common
-from tap_mongodb.sync_strategies import full_table
-from tap_mongodb.sync_strategies import incremental
 from tap_mongodb.config_utils import validate_config
 from tap_mongodb.db_utils import get_databases, produce_collection_schema
-from tap_mongodb.errors import InvalidReplicationMethodException, NoReadPrivilegeException
-from tap_mongodb.stream_utils import is_log_based_stream, is_stream_selected, write_schema_message, \
-    streams_list_to_dict, filter_streams_by_replication_method, get_streams_to_sync
+from tap_mongodb.errors import (
+    InvalidReplicationMethodException,
+    NoReadPrivilegeException,
+)
+from tap_mongodb.stream_utils import (
+    filter_streams_by_replication_method,
+    get_streams_to_sync,
+    is_log_based_stream,
+    is_stream_selected,
+    streams_list_to_dict,
+    write_schema_message,
+)
+from tap_mongodb.sync_strategies import change_streams, common, full_table, incremental
 
 LOGGER = singer.get_logger('tap_mongodb')
 
@@ -56,7 +62,7 @@ def do_discover(client: MongoClient, config: Dict):
     collection_names = database.list_collection_names()
 
     for collection_name in [c for c in collection_names if not c.startswith("system.")]:
-
+        LOGGER.info("Reading collection '%s'", collection_name)
         collection = database[collection_name]
         is_view = collection.options().get('viewOn') is not None
 
