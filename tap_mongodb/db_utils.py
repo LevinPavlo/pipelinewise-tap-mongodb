@@ -12,7 +12,7 @@ from singer import metadata
 
 LOGGER = singer.get_logger('tap_mongodb')
 
-IGNORE_DBS = ['system', 'local', 'config']
+IGNORE_DBS = ['system', 'local', 'config', 'admin']
 ROLES_WITHOUT_FIND_PRIVILEGES = {
     'dbAdmin',
     'userAdmin',
