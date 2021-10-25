@@ -53,12 +53,11 @@ def do_discover(client: MongoClient, config: Dict):
         config: DB config
     """
     streams = []
-
+    LOGGER.info("Databases in config '%s'", config['database'])
     if config['database'] not in get_databases(client, config):
         raise NoReadPrivilegeException(config['user'], config['database'])
 
     database = client[config['database']]
-
     collection_names = database.list_collection_names()
 
     for collection_name in [c for c in collection_names if not c.startswith("system.")]:
