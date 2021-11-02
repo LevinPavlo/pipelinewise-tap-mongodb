@@ -61,7 +61,7 @@ def do_discover(client: MongoClient, config: Dict):
     database = client[config['database']]
     collection_names = database.list_collection_names()
 
-    for collection_name in [c for c in collection_names if not c.startswith("system.")]:
+    for collection_name in [c for c in collection_names if not c.startswith("system.") or not c.startswith("admin.")]:
         LOGGER.info("Reading collection '%s'", collection_name)
         collection = database[collection_name]
         is_view = collection.options().get('viewOn') is not None
